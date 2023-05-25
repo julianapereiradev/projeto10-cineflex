@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 export default function SeatsPage() {
-
   const parametros = useParams();
 
   console.log("parametro aqui em SeatsPage:", parametros.idSessao);
@@ -12,8 +11,7 @@ export default function SeatsPage() {
   const [listSeats, setListSeats] = useState([]);
 
   useEffect(() => {
-    const URL =
-      `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametros.idSessao}/seats`;
+    const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametros.idSessao}/seats`;
 
     const promise = axios.get(URL);
 
@@ -42,7 +40,7 @@ export default function SeatsPage() {
       Selecione o(s) assento(s)
       <SeatsContainer>
         {listSeats.seats.map((seat) => (
-          <SeatItem>{seat.name}</SeatItem>
+          <SeatItem key={seat.id}>{seat.name}</SeatItem>
         ))}
       </SeatsContainer>
       <CaptionContainer>
