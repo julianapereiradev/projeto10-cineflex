@@ -11,6 +11,8 @@ export default function SeatsPage() {
 
   const [listSeats, setListSeats] = useState([]);
   const [pickedSeats, setPickedSeats] = useState([]);
+  const [nomeComprador, setNomeComprador] = useState("");
+  const [cpf, setCpf] = useState("");
 
   useEffect(() => {
     const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametros.idSessao}/seats`;
@@ -35,9 +37,16 @@ export default function SeatsPage() {
     );
   }
 
-  // console.log("listSeats aqui:", listSeats);
-  console.log('pickedSeats aqui em SeatSPage:', pickedSeats)
+  function FinishReservation() {
+    console.log(`os ids são: ${pickedSeats}`);
+    console.log(`o nome é: ${nomeComprador}`);
+    console.log(`o cpf é: ${cpf}`);
+  }
 
+  // console.log("listSeats aqui:", listSeats);
+  // console.log('pickedSeats aqui em SeatSPage:', pickedSeats)
+  // console.log('nomeComprador', nomeComprador)
+  // console.log('cpf', cpf)
 
   return (
     <PageContainer>
@@ -70,12 +79,19 @@ export default function SeatsPage() {
           Indisponível
         </CaptionItem>
       </CaptionContainer>
-
       <FormContainer>
         Nome do Comprador:
-        <input placeholder="Digite seu nome..." />
+        <input
+          placeholder="Digite seu nome..."
+          value={nomeComprador}
+          onChange={(event) => setNomeComprador(event.target.value)}
+        />
         CPF do Comprador:
-        <input placeholder="Digite seu CPF..." />
+        <input
+          placeholder="Digite seu CPF..."
+          value={cpf}
+          onChange={(event) => setCpf(event.target.value)}
+        />
         <Link
           to="/sucesso"
           style={{
@@ -83,10 +99,11 @@ export default function SeatsPage() {
             alignSelf: "center",
           }}
         >
-          <button>Reservar Assento(s)</button>
+          <button onClick={() => FinishReservation()}>
+            Reservar Assento(s)
+          </button>
         </Link>
       </FormContainer>
-
       <FooterContainer>
         <div>
           <img src={listSeats.movie.posterURL} alt="poster" />
@@ -98,7 +115,6 @@ export default function SeatsPage() {
           </p>
         </div>
       </FooterContainer>
-
     </PageContainer>
   );
 }
