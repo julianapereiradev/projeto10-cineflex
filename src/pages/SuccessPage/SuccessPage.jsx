@@ -1,38 +1,38 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function SuccessPage() {
+  const location = useLocation();
+  const { mensagemAEnviar, seatsData } = location.state;
+
   return (
     <PageContainer>
       <h1>
         Pedido feito <br /> com sucesso!
       </h1>
-
       <TextContainer>
         <strong>
           <p>Filme e sessão</p>
         </strong>
-        <p>Tudo em todo lugar ao mesmo tempo</p>
-        <p>03/03/2023 - 14:00</p>
+        <p>{seatsData.movie.title}</p>
+        <p>{seatsData.day.date} - {seatsData.name}</p>
       </TextContainer>
 
       <TextContainer>
         <strong>
           <p>Ingressos</p>
         </strong>
-        <p>Assento 01</p>
-        <p>Assento 02</p>
-        <p>Assento 03</p>
+        {mensagemAEnviar.ids.map((idAssento) =>  <p key={idAssento}>{idAssento}</p>)}
       </TextContainer>
 
       <TextContainer>
         <strong>
           <p>Comprador</p>
         </strong>
-        <p>Nome: Letícia Chijo</p>
-        <p>CPF: 123.456.789-10</p>
+        <p>Nome: {mensagemAEnviar.name}</p>
+        <p>CPF: {mensagemAEnviar.cpf}</p>
       </TextContainer>
 
       <Link to="/">

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import SeatPage from "./SeatPage";
 
 export default function SeatsPage() {
@@ -9,10 +9,12 @@ export default function SeatsPage() {
 
   console.log("parametro aqui em SeatsPage:", parametros.idSessao);
 
+  const navigate = useNavigate()
   const [listSeats, setListSeats] = useState([]);
   const [pickedSeats, setPickedSeats] = useState([]);
   const [nomeComprador, setNomeComprador] = useState("");
   const [cpf, setCpf] = useState("");
+  const [redirectData, setRedirectData] = useState(null)
 
   useEffect(() => {
     const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametros.idSessao}/seats`;
@@ -55,6 +57,13 @@ export default function SeatsPage() {
 
     function sucessoNaMsgEnviada(respostaSucessoMsgEnviada) {
       console.log("respostaSucessoMsgEnviada aqui:", respostaSucessoMsgEnviada);
+    
+    setRedirectData({
+      mensagemAEnviar: mensagemAEnviar,
+      seatsData: listSeats,
+    })
+
+    navigate("/sucesso", {state: {mensagemAEnviar: mensagemAEnviar, seatsData: listSeats} })
     }
 
     function erroNaMsgEnviada(respostaEntradaErroMesgEnviada) {
@@ -111,7 +120,6 @@ export default function SeatsPage() {
           onChange={(event) => setCpf(event.target.value)}
         />
         <Link
-          to="/sucesso"
           style={{
             textDecoration: "none",
             alignSelf: "center",
