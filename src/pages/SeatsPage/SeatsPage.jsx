@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import SeatPage from "./SeatPage";
 
 export default function SeatsPage() {
   const parametros = useParams();
@@ -9,26 +10,22 @@ export default function SeatsPage() {
   console.log("parametro aqui em SeatsPage:", parametros.idSessao);
 
   const [listSeats, setListSeats] = useState([]);
-  const [isSelected, setIsSelected] = useState(false);
+  const [pickedSeats, setPickedSeats] = useState([]);
 
   useEffect(() => {
     const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametros.idSessao}/seats`;
 
     const promise = axios.get(URL);
 
-    promise.then((respostaAssentos) => {
-      console.log("respostaAssentos.data::", respostaAssentos.data);
-      setListSeats(respostaAssentos.data);
+    promise.then((seatsAnswer) => {
+      // console.log("seatsAnswer.data::", seatsAnswer.data);
+      setListSeats(seatsAnswer.data);
     });
 
     promise.catch((erro) => {
       console.log("erro.response.data de Assentos::", erro.response.data);
     });
   }, []);
-
-  function SelectingSeats(props) {
-    console.log(`Você clicou no assento: ${props.id} e ele tem boolean de ${props.isAvailable}`)
-  }
 
   if (listSeats.length === 0) {
     return (
@@ -38,23 +35,23 @@ export default function SeatsPage() {
     );
   }
 
-  console.log("listSeats aqui:", listSeats);
+  // console.log("listSeats aqui:", listSeats);
+  console.log('pickedSeats aqui em SeatSPage:', pickedSeats)
+
 
   return (
     <PageContainer>
       Selecione o(s) assento(s)
       <SeatsContainer>
         {listSeats.seats.map((seat) => (
-          <div key={seat.id}>
-            <SeatItem
-              key={seat.id}
-              colorsituationseat={seat.isAvailable}
-              onClick={() => SelectingSeats(seat)}
-            >
-              {seat.name}
-            </SeatItem>
-            {/* <p>{seat.isAvailable.toString()}</p> */}
-          </div>
+          <SeatPage
+            key={seat.id}
+            id={seat.id}
+            seatName={seat.name}
+            isAvailable={seat.isAvailable}
+            pickedSeats={pickedSeats}
+            setPickedSeats={setPickedSeats}
+          />
         ))}
       </SeatsContainer>
       <CaptionContainer>
@@ -73,6 +70,7 @@ export default function SeatsPage() {
           Indisponível
         </CaptionItem>
       </CaptionContainer>
+
       <FormContainer>
         Nome do Comprador:
         <input placeholder="Digite seu nome..." />
@@ -88,6 +86,7 @@ export default function SeatsPage() {
           <button>Reservar Assento(s)</button>
         </Link>
       </FormContainer>
+
       <FooterContainer>
         <div>
           <img src={listSeats.movie.posterURL} alt="poster" />
@@ -99,6 +98,7 @@ export default function SeatsPage() {
           </p>
         </div>
       </FooterContainer>
+
     </PageContainer>
   );
 }
@@ -189,23 +189,7 @@ const CaptionItem = styled.div`
   align-items: center;
   font-size: 12px;
 `;
-const SeatItem = styled.div`
-  border: 1px solid
-    ${(props) => (props.colorsituationseat === true ? "#7B8B99" : "#F7C52B")}; // Essa cor deve mudar
-  background-color: ${(props) =>
-    props.colorsituationseat === true
-      ? "#C3CFD9"
-      : "#FBE192"}; // Essa cor deve mudar
-  height: 25px;
-  width: 25px;
-  border-radius: 25px;
-  font-family: "Roboto";
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 5px 3px;
-`;
+
 const FooterContainer = styled.div`
   width: 100%;
   height: 120px;
