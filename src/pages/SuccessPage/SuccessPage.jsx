@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export default function SuccessPage() {
   const location = useLocation();
-  const { mensagemAEnviar, seatsData } = location.state;
+  const { mensagemAEnviar, seatsData, pickedSeatsName } = location.state;
 
   return (
     <PageContainer>
@@ -24,7 +22,7 @@ export default function SuccessPage() {
         <strong>
           <p>Ingressos</p>
         </strong>
-        {mensagemAEnviar.ids.map((idAssento) =>  <p key={idAssento}>{idAssento}</p>)}
+        {pickedSeatsName.map((idAssento) =>  <p key={idAssento}>{idAssento}</p>)}
       </TextContainer>
 
       <TextContainer>

@@ -7,11 +7,12 @@ import SeatPage from "./SeatPage";
 export default function SeatsPage() {
   const parametros = useParams();
 
-  console.log("parametro aqui em SeatsPage:", parametros.idSessao);
+  // console.log("parametro aqui em SeatsPage:", parametros.idSessao);
 
   const navigate = useNavigate()
   const [listSeats, setListSeats] = useState([]);
   const [pickedSeats, setPickedSeats] = useState([]);
+  const [pickedSeatsName, setPickedSeatsName] = useState([])
   const [nomeComprador, setNomeComprador] = useState("");
   const [cpf, setCpf] = useState("");
   const [redirectData, setRedirectData] = useState(null)
@@ -22,7 +23,6 @@ export default function SeatsPage() {
     const promise = axios.get(URL);
 
     promise.then((seatsAnswer) => {
-      // console.log("seatsAnswer.data::", seatsAnswer.data);
       setListSeats(seatsAnswer.data);
     });
 
@@ -46,7 +46,6 @@ export default function SeatsPage() {
       name: nomeComprador,
       cpf: cpf,
     };
-    console.log('mensagemAEnviar:', mensagemAEnviar)
 
     const promiseEnviarMensagem = axios.post(
       "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many",
@@ -63,8 +62,9 @@ export default function SeatsPage() {
       seatsData: listSeats,
     })
 
-    navigate("/sucesso", {state: {mensagemAEnviar: mensagemAEnviar, seatsData: listSeats} })
-    }
+    navigate("/sucesso", {state: {mensagemAEnviar: mensagemAEnviar, seatsData: listSeats, pickedSeatsName: pickedSeatsName} }) 
+  
+  }
 
     function erroNaMsgEnviada(respostaEntradaErroMesgEnviada) {
       console.log(
@@ -73,7 +73,6 @@ export default function SeatsPage() {
       );
     }
   }
-
 
   return (
     <PageContainer>
@@ -87,6 +86,8 @@ export default function SeatsPage() {
             isAvailable={seat.isAvailable}
             pickedSeats={pickedSeats}
             setPickedSeats={setPickedSeats}
+            pickedSeatsName={pickedSeatsName}
+            setPickedSeatsName={setPickedSeatsName}
           />
         ))}
       </SeatsContainer>

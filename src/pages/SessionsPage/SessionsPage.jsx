@@ -7,7 +7,7 @@ export default function SessionsPage() {
 
   const parametros = useParams();
 
-  console.log("parametro aqui em SessionsPage:", parametros.idFilme);
+  // console.log("parametro aqui em SessionsPage:", parametros.idFilme);
 
   const [listSessions, setListSessions] = useState([]);
 
@@ -34,8 +34,6 @@ export default function SessionsPage() {
       </div>
     );
   }
-
-  console.log("listSessions aqui:", listSessions);
 
   return (
     <PageContainer>

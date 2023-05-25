@@ -9,6 +9,8 @@ export default function SeatPage(props) {
     isAvailable,
     pickedSeats,
     setPickedSeats,
+    pickedSeatsName,
+    setPickedSeatsName,
   } = props;
 
   const [isSelected, setIsSelected] = useState(false);
@@ -24,6 +26,7 @@ export default function SeatPage(props) {
 
       if (!isSelected === true && !pickedSeats.includes(id)) {
         setPickedSeats([...pickedSeats, id]);
+        setPickedSeatsName([...pickedSeatsName, seatName])
       }
       if (!isSelected === false && pickedSeats.includes(id)) {
         setPickedSeats([...pickedSeats].filter((idsInPickedSeats) => {
@@ -33,11 +36,17 @@ export default function SeatPage(props) {
                 return false
             }
         }));
+
+        setPickedSeatsName([...pickedSeatsName].filter((namesInPickedSeats) => {
+          if(namesInPickedSeats !== seatName) {
+              return true
+          } else {
+              return false
+          }
+      }));
       }
     }
   }
-
-// console.log('pickedSeats aqui em SeatPage:', pickedSeats)
 
   return (
     <SeatItem
