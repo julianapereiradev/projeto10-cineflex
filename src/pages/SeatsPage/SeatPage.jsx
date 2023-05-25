@@ -54,6 +54,7 @@ export default function SeatPage(props) {
       isSelected={isSelected}
       onClick={() => selectingSeats()}
       borderColor={isAvailable}
+      data-test="seat"
     >
       {seatName}
     </SeatItem>

@@ -110,12 +110,14 @@ export default function SeatsPage() {
       <FormContainer>
         Nome do Comprador:
         <input
+          data-test="client-name"
           placeholder="Digite seu nome..."
           value={nomeComprador}
           onChange={(event) => setNomeComprador(event.target.value)}
         />
         CPF do Comprador:
         <input
+          data-test="client-cpf"
           placeholder="Digite seu CPF..."
           value={cpf}
           onChange={(event) => setCpf(event.target.value)}
@@ -126,12 +128,15 @@ export default function SeatsPage() {
             alignSelf: "center",
           }}
         >
-          <button onClick={() => FinishReservation()}>
+          <button
+          data-test="book-seat-btn"
+          onClick={() => FinishReservation()}
+          >
             Reservar Assento(s)
           </button>
         </Link>
       </FormContainer>
-      <FooterContainer>
+      <FooterContainer data-test="footer">
         <div>
           <img src={listSeats.movie.posterURL} alt="poster" />
         </div>
