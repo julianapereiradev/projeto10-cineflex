@@ -1,14 +1,19 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function SessionsPage() {
+
+  const parametros = useParams();
+
+  console.log("parametro aqui em SessionsPage:", parametros.idFilme);
+
   const [listSessions, setListSessions] = useState([]);
 
   useEffect(() => {
     const URL =
-      "https://mock-api.driven.com.br/api/v8/cineflex/movies/1/showtimes";
+      `https://mock-api.driven.com.br/api/v8/cineflex/movies/${parametros.idFilme}/showtimes`;
 
     const promise = axios.get(URL);
 
