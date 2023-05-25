@@ -38,15 +38,33 @@ export default function SeatsPage() {
   }
 
   function FinishReservation() {
-    console.log(`os ids são: ${pickedSeats}`);
-    console.log(`o nome é: ${nomeComprador}`);
-    console.log(`o cpf é: ${cpf}`);
+
+    const mensagemAEnviar = {
+      ids: pickedSeats,
+      name: nomeComprador,
+      cpf: cpf,
+    };
+    console.log('mensagemAEnviar:', mensagemAEnviar)
+
+    const promiseEnviarMensagem = axios.post(
+      "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many",
+      mensagemAEnviar
+    );
+    promiseEnviarMensagem.then(sucessoNaMsgEnviada);
+    promiseEnviarMensagem.catch(erroNaMsgEnviada);
+
+    function sucessoNaMsgEnviada(respostaSucessoMsgEnviada) {
+      console.log("respostaSucessoMsgEnviada aqui:", respostaSucessoMsgEnviada);
+    }
+
+    function erroNaMsgEnviada(respostaEntradaErroMesgEnviada) {
+      console.log(
+        "respostaEntradaErroMesgEnviada aqui:",
+        respostaEntradaErroMesgEnviada
+      );
+    }
   }
 
-  // console.log("listSeats aqui:", listSeats);
-  // console.log('pickedSeats aqui em SeatSPage:', pickedSeats)
-  // console.log('nomeComprador', nomeComprador)
-  // console.log('cpf', cpf)
 
   return (
     <PageContainer>
