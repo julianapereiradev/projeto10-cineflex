@@ -9,6 +9,7 @@ export default function SeatsPage() {
   console.log("parametro aqui em SeatsPage:", parametros.idSessao);
 
   const [listSeats, setListSeats] = useState([]);
+  const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
     const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametros.idSessao}/seats`;
@@ -25,6 +26,10 @@ export default function SeatsPage() {
     });
   }, []);
 
+  function SelectingSeats(props) {
+    console.log(`Você clicou no assento: ${props.id} e ele tem boolean de ${props.isAvailable}`)
+  }
+
   if (listSeats.length === 0) {
     return (
       <div style={{ marginTop: "80px", fontSize: "30px" }}>
@@ -40,20 +45,31 @@ export default function SeatsPage() {
       Selecione o(s) assento(s)
       <SeatsContainer>
         {listSeats.seats.map((seat) => (
-          <SeatItem key={seat.id}>{seat.name}</SeatItem>
+          <div key={seat.id}>
+            <SeatItem
+              key={seat.id}
+              colorsituationseat={seat.isAvailable}
+              onClick={() => SelectingSeats(seat)}
+            >
+              {seat.name}
+            </SeatItem>
+            {/* <p>{seat.isAvailable.toString()}</p> */}
+          </div>
         ))}
       </SeatsContainer>
       <CaptionContainer>
         <CaptionItem>
-          <CaptionCircle />
+          <CaptionCircleSelected />
           Selecionado
         </CaptionItem>
+
         <CaptionItem>
-          <CaptionCircle />
+          <CaptionCircleAvailable />
           Disponível
         </CaptionItem>
+
         <CaptionItem>
-          <CaptionCircle />
+          <CaptionCircleUnavailable />
           Indisponível
         </CaptionItem>
       </CaptionContainer>
@@ -130,9 +146,10 @@ const CaptionContainer = styled.div`
   justify-content: space-between;
   margin: 20px;
 `;
-const CaptionCircle = styled.div`
-  border: 1px solid blue; // Essa cor deve mudar
-  background-color: lightblue; // Essa cor deve mudar
+
+const CaptionCircleSelected = styled.div`
+  border: 1px solid #0e7d71;
+  background-color: #1aae9e;
   height: 25px;
   width: 25px;
   border-radius: 25px;
@@ -141,6 +158,31 @@ const CaptionCircle = styled.div`
   justify-content: center;
   margin: 5px 3px;
 `;
+
+const CaptionCircleAvailable = styled.div`
+  border: 1px solid #7b8b99;
+  background-color: #c3cfd9;
+  height: 25px;
+  width: 25px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 3px;
+`;
+
+const CaptionCircleUnavailable = styled.div`
+  border: 1px solid #f7c52b;
+  background-color: #fbe192;
+  height: 25px;
+  width: 25px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 3px;
+`;
+
 const CaptionItem = styled.div`
   display: flex;
   flex-direction: column;
@@ -148,8 +190,12 @@ const CaptionItem = styled.div`
   font-size: 12px;
 `;
 const SeatItem = styled.div`
-  border: 1px solid blue; // Essa cor deve mudar
-  background-color: lightblue; // Essa cor deve mudar
+  border: 1px solid
+    ${(props) => (props.colorsituationseat === true ? "#7B8B99" : "#F7C52B")}; // Essa cor deve mudar
+  background-color: ${(props) =>
+    props.colorsituationseat === true
+      ? "#C3CFD9"
+      : "#FBE192"}; // Essa cor deve mudar
   height: 25px;
   width: 25px;
   border-radius: 25px;
