@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import SeatPage from "./SeatPage";
 
 export default function SeatsPage() {
@@ -9,13 +9,13 @@ export default function SeatsPage() {
 
   // console.log("parametro aqui em SeatsPage:", parametros.idSessao);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [listSeats, setListSeats] = useState([]);
   const [pickedSeats, setPickedSeats] = useState([]);
-  const [pickedSeatsName, setPickedSeatsName] = useState([])
+  const [pickedSeatsName, setPickedSeatsName] = useState([]);
   const [nomeComprador, setNomeComprador] = useState("");
   const [cpf, setCpf] = useState("");
-  const [redirectData, setRedirectData] = useState(null)
+  const [redirectData, setRedirectData] = useState(null);
 
   useEffect(() => {
     const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametros.idSessao}/seats`;
@@ -39,7 +39,8 @@ export default function SeatsPage() {
     );
   }
 
-  function FinishReservation() {
+  function FinishReservation(e) {
+    e.preventDefault()
 
     const mensagemAEnviar = {
       ids: pickedSeats,
@@ -56,15 +57,20 @@ export default function SeatsPage() {
 
     function sucessoNaMsgEnviada(respostaSucessoMsgEnviada) {
       console.log("respostaSucessoMsgEnviada aqui:", respostaSucessoMsgEnviada);
-    
-    setRedirectData({
-      mensagemAEnviar: mensagemAEnviar,
-      seatsData: listSeats,
-    })
 
-    navigate("/sucesso", {state: {mensagemAEnviar: mensagemAEnviar, seatsData: listSeats, pickedSeatsName: pickedSeatsName} }) 
-  
-  }
+      setRedirectData({
+        mensagemAEnviar: mensagemAEnviar,
+        seatsData: listSeats,
+      });
+
+      navigate("/sucesso", {
+        state: {
+          mensagemAEnviar: mensagemAEnviar,
+          seatsData: listSeats,
+          pickedSeatsName: pickedSeatsName,
+        },
+      });
+    }
 
     function erroNaMsgEnviada(respostaEntradaErroMesgEnviada) {
       console.log(
@@ -73,6 +79,8 @@ export default function SeatsPage() {
       );
     }
   }
+
+  console.log('pickedseats aqui::',pickedSeats)
 
   return (
     <PageContainer>
@@ -107,35 +115,35 @@ export default function SeatsPage() {
           Indisponível
         </CaptionItem>
       </CaptionContainer>
-      <FormContainer>
-        Nome do Comprador:
+
+      <FormContainer onSubmit={FinishReservation}>
+        <Title htmlFor="nameclient">Nome do Comprador:</Title>
         <input
+          type="text"
+          required
+          id="nameclient"
           data-test="client-name"
           placeholder="Digite seu nome..."
           value={nomeComprador}
           onChange={(event) => setNomeComprador(event.target.value)}
         />
-        CPF do Comprador:
+        <Title htmlFor="cpfClient">CPF do Comprador:</Title>
         <input
+          type="text"
+          required
+          id="cpfClient"
           data-test="client-cpf"
           placeholder="Digite seu CPF..."
           value={cpf}
           onChange={(event) => setCpf(event.target.value)}
         />
-        <Link
-          style={{
-            textDecoration: "none",
-            alignSelf: "center",
-          }}
-        >
-          <button
-          data-test="book-seat-btn"
-          onClick={() => FinishReservation()}
-          >
+       
+          <button data-test="book-seat-btn" type="submit">
             Reservar Assento(s)
           </button>
-        </Link>
+       
       </FormContainer>
+
       <FooterContainer data-test="footer">
         <div>
           <img src={listSeats.movie.posterURL} alt="poster" />
@@ -172,7 +180,7 @@ const SeatsContainer = styled.div`
   justify-content: center;
   margin-top: 20px;
 `;
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   width: calc(100vw - 40px);
   display: flex;
   flex-direction: column;
@@ -236,6 +244,10 @@ const CaptionItem = styled.div`
   flex-direction: column;
   align-items: center;
   font-size: 12px;
+`;
+
+const Title = styled.label`
+  //
 `;
 
 const FooterContainer = styled.div`
