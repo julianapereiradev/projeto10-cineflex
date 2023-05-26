@@ -14,21 +14,46 @@ export default function App() {
   const [showButton, setShowButton] = useState(true);
 
   function backNavigate() {
-    navigate(-1)
+    navigate(-1);
   }
 
   return (
     <>
       <NavContainer>
-      {showButton && <button data-test="go-home" onClick={() => backNavigate()}>←</button>}
-        
+        {showButton && (
+          <button data-test="go-home-header-btn" onClick={() => backNavigate()}>
+            <img src="https://cdn.icon-icons.com/icons2/2596/PNG/512/arrow_left_icon_155794.png"/>
+          </button>
+        )}
+
         <p>CINEFLEX</p>
       </NavContainer>
       <Routes>
-        <Route path="/" element={<HomePage showButton={showButton} setShowButton={setShowButton} />} />
-        <Route path="/sessoes/:idFilme" element={<SessionsPage showButton={showButton} setShowButton={setShowButton} />} />
+        <Route
+          path="/"
+          element={
+            <HomePage showButton={showButton} setShowButton={setShowButton} />
+          }
+        />
+        <Route
+          path="/sessoes/:idFilme"
+          element={
+            <SessionsPage
+              showButton={showButton}
+              setShowButton={setShowButton}
+            />
+          }
+        />
         <Route path="/assentos/:idSessao" element={<SeatsPage />} />
-        <Route path="/sucesso" element={<SuccessPage showButton={showButton} setShowButton={setShowButton} />} />
+        <Route
+          path="/sucesso"
+          element={
+            <SuccessPage
+              showButton={showButton}
+              setShowButton={setShowButton}
+            />
+          }
+        />
       </Routes>
     </>
   );
@@ -39,15 +64,31 @@ const NavContainer = styled.div`
   height: 70px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: #c3cfd9;
   color: #e8833a;
   font-family: "Roboto", sans-serif;
   font-size: 34px;
   position: fixed;
   top: 0;
-  a {
-    text-decoration: none;
-    color: #e8833a;
+  button {
+    margin-left: 10px;
+    background-color: #c3cfd9;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    height: 43px;
+    width: 55.08px;
+    font-size: 50px;
+    color: black;
+img{
+  height: 43px;
+    width: 55.08px;
+}
+  }
+  p {
+    text-align: center;
+    flex-grow: 1;
   }
 `;
