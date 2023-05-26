@@ -75,6 +75,7 @@ const SeatItem = styled.div`
   align-items: center;
   justify-content: center;
   margin: 5px 3px;
+  cursor: pointer;
   background-color: ${(props) =>
     props.isSelected === true ? "#1AAE9E" : ""};
   border: 1px solid

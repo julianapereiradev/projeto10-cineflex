@@ -189,6 +189,7 @@ const FormContainer = styled.form`
   font-size: 18px;
   button {
     align-self: center;
+    cursor: pointer;
   }
   input {
     width: calc(100vw - 60px);
