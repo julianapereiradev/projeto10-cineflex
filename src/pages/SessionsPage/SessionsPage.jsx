@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams} from "react-router-dom";
 
-export default function SessionsPage() {
+export default function SessionsPage(props) {
+
+  const {showButton, setShowButton} = props
 
   const parametros = useParams();
 
@@ -26,6 +28,10 @@ export default function SessionsPage() {
       console.log("erro.response.data de Sessoes::", erro.response.data);
     });
   }, []);
+
+  if(showButton === false) {
+    setShowButton(true)
+  }
 
   if (listSessions.length === 0) {
     return (

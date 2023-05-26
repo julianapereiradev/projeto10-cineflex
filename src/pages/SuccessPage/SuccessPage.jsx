@@ -1,9 +1,14 @@
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 
-export default function SuccessPage() {
+export default function SuccessPage(props) {
   const location = useLocation();
   const { mensagemAEnviar, seatsData, pickedSeatsName } = location.state;
+  const {showButton, setShowButton} = props
+
+  if(showButton === true) {
+    setShowButton(false)
+  }
 
   return (
     <PageContainer>

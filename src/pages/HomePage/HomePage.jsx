@@ -3,7 +3,9 @@ import styled from "styled-components";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function HomePage() {
+export default function HomePage(props) {
+
+ const {showButton, setShowButton} = props
 
   const [movies, setMovies] = useState([]);
 
@@ -21,6 +23,10 @@ export default function HomePage() {
       console.log("erro.response.data::", erro.response.data);
     });
   }, []);
+
+  if(showButton === true) {
+    setShowButton(false)
+  }
 
   if (movies.length === 0) {
     return (
